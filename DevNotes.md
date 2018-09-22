@@ -15,6 +15,9 @@
 1. how to show the bar chart of a hardcoded year 
 2. change the year; according to query?
 3. implement animation
+4. refactor; break down App.js to tinier components
+
+
 
 ## Resources / Tutorials:
 https://bl.ocks.org/officeofjane/9b9e606e9876e34385cc4aeab188ed73
