@@ -1,20 +1,13 @@
-import React, {
-  Component
-} from "react";
+import React, { Component } from "react";
 import "./App.css";
-import {
-  connect
-} from 'react-redux';
+import { connect } from 'react-redux';
 import * as d3 from "d3";
-import {
-  changeActiveYear
-} from "../redux/actions";
+import { changeActiveYear } from "../redux/actions";
 
 
 class App extends Component {
   constructor(props) {
     super(props);
-    // this.drawPlot = this.drawPlot.bind(this);
   }
 
   componentDidMount() {
@@ -31,6 +24,7 @@ class App extends Component {
   }
 
   createBarChart() {
+
     console.log(this.props.years, "#bar chart")
     var timer = 0; // * TMP
     var formatDateIntoYear = d3.timeFormat("%Y");
@@ -42,25 +36,32 @@ class App extends Component {
       endDate =  new Date(this.props.years[this.props.years.length-1], 1, 1, 0, 0, 0, 0);
 
     var margin = {top:50, right:50, bottom:0, left:50},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = 1100 - margin.left - margin.right,
+        height = 700 - margin.top - margin.bottom;
 
         
 // refresh page to prevent duplicates
   d3.selectAll("svg").remove();
 
-  // var svg = d3.select("#vis")
-  //     .append("svg")
-  //     .attr("width", width + margin.left + margin.right)
-  //     .attr("height", height + margin.top + margin.bottom);  
-
-      var svg = d3.select('#vis')
+      var svg = d3.select('#vis_barchart')
       .append('svg')
       .attr('width', width)
       .attr('height', height)
       .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')');
+      .attr('width', width-100)
+      .attr('height', height-100)      
+      .attr('class', 'main_group')
+ 
+      .attr('transform', 'translate(' + margin.left + ',' + 0 + ')');
+
+      var svg_slider = d3.select('#vis_slider')
+      .append('svg')
+      .attr('width', width+100)
+      .attr('height', height/2)
+      .append('g')
+      .attr('transform', 'translate(' + 0 + ',' + margin.right + ')');
   
+
       var x_scale = d3.scaleBand()
     .rangeRound([0, width])
     .padding(0.1);
@@ -76,7 +77,7 @@ var x_axis = d3.axisBottom(x_scale);
 
 svg.append('g')
     .attr('class', 'x axis')
-    .attr('transform', 'translate(0,' + height + ')');
+    .attr('transform', 'translate(0,' + 650 + ')');
 
 svg.append('g')
     .attr('class', 'y axis');
@@ -93,7 +94,7 @@ var x = d3.scaleTime()
     .range([0, targetValue])
     .clamp(true);
 
-var slider = svg.append("g")
+var slider = svg_slider.append("g")
     .attr("class", "slider")
     .attr("transform", "translate(" + margin.left + "," + height/5 + ")");
 
@@ -159,11 +160,11 @@ if (this.props.segData) {
 
 var plot = svg.append("g")
     .attr("class", "plot")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + 0 + "," + margin.top + ")");
 
 //initialize barchart
   if (dataset){
-    // drawPlot(dataset[this.props.years[0]]);
+    drawPlot(dataset, this.props.years[4]);
 console.log(dataset[this.props.years[0]])
   }
   playButton
@@ -202,11 +203,11 @@ function step() {
   }
 }
 
-function drawPlot(x) {
+function drawPlot(data, year) {
   
   console.log(x, "THIIIIS")
  
-  var csv_data = x;
+  var csv_data = data[year];
 
     var t = d3.transition()
         .duration(2000);
@@ -236,7 +237,7 @@ function drawPlot(x) {
         .append('rect')
         .attr('class', 'bar')
         .attr('x', function(d) {
-            return x_scale(d.month);
+            return x_scale(d.island);
         })
         .attr('width', x_scale.bandwidth())
         .attr('y', height)
@@ -245,13 +246,13 @@ function drawPlot(x) {
     new_bars.merge(bars)
         .transition(t)
         .attr('y', function(d) {
-            return y_scale(+d.value);
+            return y_scale(+d.population);
         })
         .attr('height', function(d) {
-            return height - y_scale(+d.value)
+            return height - y_scale(+d.population)
         })
         .attr('fill', function(d) {
-            return colour_scale(+d.value);
+            return colour_scale(+d.population);
         })
 
     svg.select('.x.axis')
@@ -280,7 +281,7 @@ console.log(dataset[formatDate(h)], "DATEEEE")
     return d.date < h;
   })
 
-  // drawPlot(newData);
+  drawPlot(dataset, formatDate(h));
 }
   }
 
@@ -289,33 +290,27 @@ console.log(dataset[formatDate(h)], "DATEEEE")
 
       let pigPopulation = <tr><td>Loading</td></tr> ;
 
-      if (this.props.data) {
+      // if (this.props.data) {
 
-        pigPopulation = this.props.data["PIG POPULATIONS"].map((datum, index) => ( 
-        <tr key = {index } >
-            <td> {datum.year } x </td>
-            <td> {datum.island} </td> 
-            <td>{ datum.pigPopulation}</td>
-         </tr>))
+      //   pigPopulation = this.props.data["PIG POPULATIONS"].map((datum, index) => ( 
+      //   <tr key = {index } >
+      //       <td> {datum.year } x </td>
+      //       <td> {datum.island} </td> 
+      //       <td>{ datum.pigPopulation}</td>
+      //    </tr>))
 
-            console.log(pigPopulation);
+      //       console.log(pigPopulation);
 
-          }
+      //     }
           return ( 
             <div className = "App" >
-            <div id="vis">
+            <div id="vis_barchart">
+            </div>
+            <div id="vis_slider">
+
               <button id="play-button">Play</button>
             </div>
-            <table>
-            <tbody>
-            <tr>
-              <th> Year </th> 
-              <th> Island </th> 
-              <th> Population </th> 
-            </tr> 
-            {pigPopulation}
-             </tbody> 
-            </table> 
+
             </div>
           );
         }

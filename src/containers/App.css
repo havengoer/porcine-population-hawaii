@@ -5,3 +5,11 @@
 .App-intro {
   font-size: large;
 }
+
+.slider {
+  color: red;
+}
+
+svg {
+  padding: 20px;
+}
