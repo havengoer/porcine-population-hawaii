@@ -1,0 +1,32 @@
+.track{
+  stroke: black;
+   stroke-width: 2px;
+}
+
+* {
+	overflow: visible;
+
+}
+.slider {
+  color: red;
+}
+
+svg {
+  padding: 25px;
+}
+
+.d3_tooltip_bar_chart {
+  background: rgba(255, 255, 255, 0.8);
+	color: #333;
+	font-size: 12px;
+	left: 130px;
+	padding: 18px;
+	position: absolute;
+	text-align: left;
+	top: 95px;
+	width: 120px;
+	z-index: 10;
+  border-radius: 10px;
+  border: 1px solid salmon;
+ 
+}

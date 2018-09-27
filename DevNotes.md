@@ -6,6 +6,9 @@
 
 ## Technical Challenges:
 - get queries per year
+- handle edge cases:
+    -  invalid year from the URL query
+    - query isn't given
 - integrating the scale input UI with the bar chart with React
 
 
@@ -14,10 +17,12 @@
 0. implement scaling - change the year with scaling
 1. how to show the bar chart of a hardcoded year 
 2. change the year; according to query?
-3. implement animation
-4. refactor; break down App.js to tinier components
-
-
+3. refactor; break down App.js to tinier components
+    [] play button
+    [] chart itself
+    [] slider
+        - add progress bar
+    
 
 ## Resources / Tutorials:
 https://bl.ocks.org/martinjc/f2241a09bd18caad10fc7249ca5d7816
